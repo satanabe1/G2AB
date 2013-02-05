@@ -1,7 +1,7 @@
-Žg—p•û–@
+ä½¿ç”¨æ–¹æ³•
 ---
-### Šî–{•Ò
-ƒvƒ‰ƒOƒCƒ“‚Ì’Ç‰Á@„@ƒtƒŠ[ƒvƒ‰ƒOƒCƒ“‚ÉˆÈ‰º‚ð‹Lq
+### åŸºæœ¬ç·¨
+ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã®è¿½åŠ ã€€ï¼žã€€ãƒ•ãƒªãƒ¼ãƒ—ãƒ©ã‚°ã‚¤ãƒ³ã«ä»¥ä¸‹ã‚’è¨˜è¿°
 
 ```
 <script src="http://www.google.com/jsapi"></script>
@@ -11,15 +11,15 @@
 <script src="g2ab.js"></script>
 ```
 
-ƒuƒƒO‚ÅGist‚Ìƒ\[ƒXƒR[ƒh‚ð“\‚è•t‚¯‚½‚¢‚Æ‚±‚ë‚ÉCˆÈ‰º‚ð‹Lq
+ãƒ–ãƒ­ã‚°ã§Gistã®ã‚½ãƒ¼ã‚¹ã‚³ãƒ¼ãƒ‰ã‚’è²¼ã‚Šä»˜ã‘ãŸã„ã¨ã“ã‚ã«ï¼Œä»¥ä¸‹ã‚’è¨˜è¿°
 
 ```
 <div class="amebloGist">
-  url@Gist‚ÌURL
+  url@Gistã®URL
 </div>
 ```
 
-—á:
+ä¾‹:
 
 ```
 <div class="amebloGist">
@@ -27,15 +27,15 @@
 </div>
 ```
 
-### ƒIƒvƒVƒ‡ƒ“
+### ã‚ªãƒ—ã‚·ãƒ§ãƒ³
 ```
 <div class="amebloGist">
-  size@ƒ[ƒfƒBƒ“ƒO‰æ‘œ‚Ì‘å‚«‚³
-  imgcolor@ƒ[ƒfƒBƒ“ƒO‰æ‘œ‚ÌŠî–{F
+  size@ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ç”»åƒã®å¤§ãã•
+  imgcolor@ãƒ­ãƒ¼ãƒ‡ã‚£ãƒ³ã‚°ç”»åƒã®åŸºæœ¬è‰²
 </div>
 ```
 
-—á:
+ä¾‹:
 
 ```
 <div class="amebloGist">
