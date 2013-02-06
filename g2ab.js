@@ -122,6 +122,8 @@ drawLoadingImage :
 
             var gisturl = keyValue.url;
             var gistcodeDiv = $(this);
+
+            /*
             var ldcanvas = g2ab.createLoadingCanvas(gistcodeDiv.get(0), 30);
 
             if(keyValue.size){
@@ -130,8 +132,8 @@ drawLoadingImage :
             if(keyValue.imgcolor){
                 ldcanvas.setColor(keyValue.imgcolor);
             }
-
             ldcanvas.start();
+            */
 
             $('<span />').appendTo(gistcodeDiv).text('Loading : ');
             $('<a />').appendTo(gistcodeDiv).attr('href',gisturl).attr('target','_blank').text(gisturl);
@@ -148,7 +150,9 @@ drawLoadingImage :
                     'rel':'stylesheet',
                     'href':gistdata.stylesheet
                 }).appendTo('head');
-                ldcanvas.stop();
+
+                //ldcanvas.stop();
+
                 // gistコードの追加
                 gistcodeDiv.html(gistdata.div);
             }).error(function(ex) {
@@ -157,7 +161,6 @@ drawLoadingImage :
         }else{
             console.error("Illigal parameter.");
             console.dir(keyValue);
-            //alert("Illigal parameter.");
         }
     });
     });
