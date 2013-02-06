@@ -90,11 +90,13 @@ drawLoadingImage :
                     },
                     }
 
+    // ここより上は、今のところ意味ない
     $('div' + '.g2ab').each(function(){
         var keyValue = {};
 
         $($(this).text().split("\n")).each(function(){
-            line = this.toString().replace(String.fromCharCode(160),'');// &nbsp;を削除
+            var nbsp = String.fromCharCode(160);
+            line = this.toString().replace(eval("/" + nbsp + "/g"),'');// &nbsp;を削除
 
             if(line.match(/^[ \t]*url@.+/)){ // url
                 var token = this.split('url@');
