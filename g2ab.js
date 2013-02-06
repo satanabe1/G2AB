@@ -94,19 +94,21 @@ drawLoadingImage :
         var keyValue = {};
 
         $($(this).text().split("\n")).each(function(){
-            if(this.match(/^[ \t]*url@.+/)){ // url
+            line = this.toString().replace(String.fromCharCode(160),'');// &nbsp;を削除
+
+            if(line.match(/^[ \t]*url@.+/)){ // url
                 var token = this.split('url@');
                 keyValue.url = token[1].replace(/[ \t]*$/,'');
-            }else if(this.match(/^[ \t]*type@.+/)){
+            }else if(line.match(/^[ \t]*type@.+/)){ // type
                 var token = this.split('type@');
                 keyValue.type = token[1].replace(/[ \t]*$/,'');
-            }else if(this.match(/^[ \t]*size@.+/)){
+            }else if(line.match(/^[ \t]*size@.+/)){ // size
                 var token = this.split('size@');
                 keyValue.size = token[1].replace(/[ \t]*$/,'');
-            }else if(this.match(/^[ \t]*imgcolor@.+/)){
+            }else if(line.match(/^[ \t]*imgcolor@.+/)){ // imgcolor
                 var token = this.split('imgcolor@');
                 keyValue.imgcolor = 'rgb(' + token[1].replace(/[ \t]*$/,'') + ')';
-            }else if(this.match(/^[ \t]*fntcolor@.+/)){
+            }else if(line.match(/^[ \t]*fntcolor@.+/)){ // fntcolor
                 var token = this.split('fntcolor@');
                 keyValue.fntcolor = 'rgb(' + token[1].replace(/[ \t]*$/,'') + ')';
             }
