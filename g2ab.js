@@ -90,7 +90,7 @@ drawLoadingImage :
                     },
                     }
 
-    $('div' + '.amebloGist').each(function(){
+    $('div' + '.g2ab').each(function(){
         var keyValue = {};
 
         $($(this).text().split("\n")).each(function(){

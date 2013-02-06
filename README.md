@@ -14,7 +14,7 @@
 ブログでGistのソースコードを貼り付けたいところに，以下を記述
 
 ```
-<div class="amebloGist">
+<div class="g2ab">
   url@GistのURL
 </div>
 ```
@@ -22,14 +22,14 @@
 例:
 
 ```
-<div class="amebloGist">
+<div class="g2ab">
   url@https://gist.github.com/satanabe1/4683624
 </div>
 ```
 
 ### オプション
 ```
-<div class="amebloGist">
+<div class="g2ab">
   size@ローディング画像の大きさ
   imgcolor@ローディング画像の基本色
 </div>
@@ -38,8 +38,9 @@
 例:
 
 ```
-<div class="amebloGist">
+<div class="g2ab">
   size@128
   imgcolor@255,100,255
 </div>
+```
 
