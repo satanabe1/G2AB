@@ -7,7 +7,8 @@ function printProperties(obj) {
     alert(properties);
 }
 
-$(window).load(function(){
+//$(window).load(function(){
+jQuery.event.add(window, "load", function(){
 
     var g2ab = {
         createLoadingCanvas :
@@ -110,58 +111,58 @@ drawLoadingImage :
             }else if(line.match(/^[ \t]*imgcolor@.+/)){ // imgcolor
                 var token = this.split('imgcolor@');
                 keyValue.imgcolor = 'rgb(' + token[1].replace(/[ \t]*$/,'') + ')';
-            }else if(line.match(/^[ \t]*fntcolor@.+/)){ // fntcolor
-                var token = this.split('fntcolor@');
-                keyValue.fntcolor = 'rgb(' + token[1].replace(/[ \t]*$/,'') + ')';
-            }
-        });
-        console.dir(keyValue);
+                    }else if(line.match(/^[ \t]*fntcolor@.+/)){ // fntcolor
+                        var token = this.split('fntcolor@');
+                        keyValue.fntcolor = 'rgb(' + token[1].replace(/[ \t]*$/,'') + ')';
+                            }
+                            });
+                        console.dir(keyValue);
 
-        if(keyValue.url){
-            $(this).empty();
+                        if(keyValue.url){
+                            $(this).empty();
 
-            var gisturl = keyValue.url;
-            var gistcodeDiv = $(this);
+                            var gisturl = keyValue.url;
+                            var gistcodeDiv = $(this);
 
-            /*
-            var ldcanvas = g2ab.createLoadingCanvas(gistcodeDiv.get(0), 30);
+                            /*
+                               var ldcanvas = g2ab.createLoadingCanvas(gistcodeDiv.get(0), 30);
 
-            if(keyValue.size){
-                ldcanvas.setSize(keyValue.size);
-            }
-            if(keyValue.imgcolor){
-                ldcanvas.setColor(keyValue.imgcolor);
-            }
-            ldcanvas.start();
-            */
+                               if(keyValue.size){
+                               ldcanvas.setSize(keyValue.size);
+                               }
+                               if(keyValue.imgcolor){
+                               ldcanvas.setColor(keyValue.imgcolor);
+                               }
+                               ldcanvas.start();
+                               */
 
-            $('<span />').appendTo(gistcodeDiv).text('Loading : ');
-            $('<a />').appendTo(gistcodeDiv).attr('href',gisturl).attr('target','_blank').text(gisturl);
+                            $('<span />').appendTo(gistcodeDiv).text('Loading : ');
+                            $('<a />').appendTo(gistcodeDiv).attr('href',gisturl).attr('target','_blank').text(gisturl);
 
-            $.ajax({
-                url: gisturl + '.json',
-                type: 'GET',
-                dataType: 'jsonp',
-                cache: false
-            }).success(function(gistdata) {
-                // link要素の追加
-                $('<link />',{
-                    'media':'screen',
-                    'rel':'stylesheet',
-                    'href':gistdata.stylesheet
-                }).appendTo('head');
+                            $.ajax({
+                                url: gisturl + '.json',
+                                type: 'GET',
+                                dataType: 'jsonp',
+                                cache: false
+                            }).success(function(gistdata) {
+                                // link要素の追加
+                                $('<link />',{
+                                    'media':'screen',
+                                    'rel':'stylesheet',
+                                    'href':gistdata.stylesheet
+                                }).appendTo('head');
 
-                //ldcanvas.stop();
+                                //ldcanvas.stop();
 
-                // gistコードの追加
-                gistcodeDiv.html(gistdata.div);
-            }).error(function(ex) {
-                console.log(ex);
-            });
-        }else{
-            console.error("Illigal parameter.");
-            console.dir(keyValue);
-        }
+                                // gistコードの追加
+                                gistcodeDiv.html(gistdata.div);
+                            }).error(function(ex) {
+                                console.log(ex);
+                            });
+                        }else{
+                            console.error("Illigal parameter.");
+                            console.dir(keyValue);
+                        }
     });
-    });
+});
 
