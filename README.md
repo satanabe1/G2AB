@@ -30,6 +30,7 @@ url@https://gist.github.com/satanabe1/4683624
 ### オプション
 ```
 <div class="g2ab">
+type@ローディング画像のタイプ
 size@ローディング画像の大きさ
 color@ローディング画像の基本色
 </div>
@@ -39,6 +40,7 @@ color@ローディング画像の基本色
 
 ```
 <div class="g2ab">
+type@1
 size@128
 color@255,100,255
 </div>
