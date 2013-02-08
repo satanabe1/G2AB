@@ -2,7 +2,7 @@
 function printProperties(obj) {
     var properties = '';
     for (var prop in obj){
-        properties += prop + "=" + obj[prop] + "\n";
+        properties += prop + " = " + obj[prop] + "\n";
     }
     alert(properties);
 }
@@ -11,12 +11,16 @@ function printProperties(obj) {
 jQuery.event.add(window, "load", function(){
 
     var g2ab = {
-        createLoadingCanvas :
-    function(targetDiv, canvasSize){
-        var ldcanvas = new g2ab.LoadingCanvas(targetDiv);
+        dump:function(){ console.dir(this); },
 
-        ldcanvas.setSize = function(_size){
-            //this.size = _size;
+LoadingCanvas :
+    function(parentDdid){
+        $('<canvas />').addClass(parentDdid).appendTo($('div.' + parentDdid));
+        this.color = [0,100,255];
+        this.alphas = [];
+        this.pddid = parentDdid;
+
+        this.setSize = function(_size){
             this.r = _size / 2;
             this.w = Math.round(_size * 0.1);
             this.h = Math.round(_size * 0.25);
@@ -25,7 +29,7 @@ jQuery.event.add(window, "load", function(){
             canvas.height=_size;
         }
 
-        ldcanvas.setColor = function(r,g,b){
+        this.setColor = function(r,g,b){
             if(arguments.length == 3){
                 this.color[0] = r ;
                 this.color[1] = g ;
@@ -40,56 +44,46 @@ jQuery.event.add(window, "load", function(){
             }
         }
 
-        ldcanvas.getCanvas = function(){
+        this.getCanvas = function(){
             return $('canvas.' + this.pddid).get(0);
         }
 
-        ldcanvas.start = function(){
-            this.loadingTimer = setInterval(g2ab.drawLoadingImage, 50, this);
+        this.start = function(){
+            var ldcanvas = this;
+            this.loadingTimer = setInterval(function(){
+                var nodeC = 12;
+                var context = ldcanvas.getCanvas().getContext('2d');
+                context.setTransform(1,0,0,1,ldcanvas.r,ldcanvas.r);
+                context.clearRect(-ldcanvas.r, -ldcanvas.r, (ldcanvas.r*2), (ldcanvas.r*2));
+
+                for(var i = 0; i < nodeC; i++){
+                    if(ldcanvas.alphas.length < nodeC){
+                        ldcanvas.alphas.push(i / nodeC);
+                    }
+
+                    context.fillStyle = 'rgba(' + ldcanvas.color[0] + ',' + ldcanvas.color[1] + ',' + ldcanvas.color[2] + ',' + ldcanvas.alphas[i] + ')';//)
+                    context.strokeStyle = 'transparent';
+                    context.beginPath();
+
+                    context.moveTo((0-ldcanvas.w/4), (ldcanvas.r-ldcanvas.h));
+                    context.quadraticCurveTo(0, (ldcanvas.r-ldcanvas.h-ldcanvas.w/2),(0+ldcanvas.w/4),(ldcanvas.r-ldcanvas.h));
+                    context.lineTo((0+ldcanvas.w/2), (ldcanvas.r-ldcanvas.w/3));
+                    context.quadraticCurveTo(0, (ldcanvas.r+ldcanvas.w/3), (0-ldcanvas.w/2),(ldcanvas.r-ldcanvas.w/3));
+                    context.closePath();
+                    context.fill();
+                    context.stroke();
+
+                    context.rotate((360/nodeC) * Math.PI / 180);
+                }
+
+                ldcanvas.alphas.splice(0,0,ldcanvas.alphas[nodeC-1]).pop();
+
+            }, 50);
         }
 
-        ldcanvas.stop = function(){
+        this.stop = function(){
             clearInterval(this.loadingTimer);
         }
-
-        ldcanvas.setSize(canvasSize);
-        return ldcanvas;
-    },
-LoadingCanvas :
-    function(parentDdid){
-        $('<canvas />').addClass(parentDdid).appendTo($('div.' + parentDdid));
-        this.color = [0,100,255];
-        this.alphas = [];
-        this.pddid = parentDdid;
-    },
-drawLoadingImage :
-    function(ldcanvas){
-        var nodeC = 12;
-        var context = ldcanvas.getCanvas().getContext('2d');
-        context.setTransform(1,0,0,1,ldcanvas.r,ldcanvas.r);
-        context.clearRect(-ldcanvas.r, -ldcanvas.r, (ldcanvas.r*2), (ldcanvas.r*2));
-
-        for(var i = 0; i < nodeC; i++){
-            if(ldcanvas.alphas.length < nodeC){
-                ldcanvas.alphas.push(i / nodeC);
-            }
-
-            context.fillStyle = 'rgba(' + ldcanvas.color[0] + ',' + ldcanvas.color[1] + ',' + ldcanvas.color[2] + ',' + ldcanvas.alphas[i] + ')';//)
-            context.strokeStyle = 'transparent';
-            context.beginPath();
-
-            context.moveTo((0-ldcanvas.w/4), (ldcanvas.r-ldcanvas.h));
-            context.quadraticCurveTo(0, (ldcanvas.r-ldcanvas.h-ldcanvas.w/2),(0+ldcanvas.w/4),(ldcanvas.r-ldcanvas.h));
-            context.lineTo((0+ldcanvas.w/2), (ldcanvas.r-ldcanvas.w/3));
-            context.quadraticCurveTo(0, (ldcanvas.r+ldcanvas.w/3), (0-ldcanvas.w/2),(ldcanvas.r-ldcanvas.w/3));
-            context.closePath();
-            context.fill();
-            context.stroke();
-
-            context.rotate((360/nodeC) * Math.PI / 180);
-        }
-
-        ldcanvas.alphas.splice(0,0,ldcanvas.alphas[nodeC-1]).pop();
     },
     }
 
@@ -129,10 +123,11 @@ drawLoadingImage :
 
             var gisturl = keyValue.url;
 
-            //var ldcanvas = g2ab.createLoadingCanvas($(divname).get(0), 30);
-            var ldcanvas = g2ab.createLoadingCanvas(ddid, 30);
+            var ldcanvas = new g2ab.LoadingCanvas(ddid);
             if(keyValue.size){
                 ldcanvas.setSize(keyValue.size);
+            }else{
+                ldcanvas.setSize(30);
             }
             if(keyValue.imgcolor){
                 ldcanvas.setColor(keyValue.imgcolor);
