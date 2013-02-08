@@ -15,7 +15,6 @@ jQuery.event.add(window, "load", function(){
 
 LoadingCanvas :
     function(parentDdid){
-        this.alphas = [];
         this.pddid = parentDdid;
         this.loadingType;
         this.size;
@@ -27,9 +26,6 @@ LoadingCanvas :
 
         this.setSize = function(size){
             this.size = size;
-            this.r = size / 2;
-            this.w = Math.round(size * 0.1);
-            this.h = Math.round(size * 0.25);
             var canvas = this.getCanvas();
             canvas.width = size;
             canvas.height = size;
@@ -79,40 +75,88 @@ LoadingCanvas :
     },
 animation: {
                type1:function(ldcanvas){
-                         var nodeC = 12;
+                         var r = ldcanvas.size / 2;
+                         var w = Math.round(ldcanvas.size * 0.1);
+                         var h = Math.round(ldcanvas.size * 0.25);
+                         var color = ldcanvas.color;
+                         var count = 12;
                          var context = ldcanvas.getCanvas().getContext('2d');
-                         context.setTransform(1,0,0,1,ldcanvas.r,ldcanvas.r);
-                         context.clearRect(-ldcanvas.r, -ldcanvas.r, (ldcanvas.r*2), (ldcanvas.r*2));
 
-                         for(var i = 0; i < nodeC; i++){
-                             if(ldcanvas.alphas.length < nodeC){
-                                 ldcanvas.alphas.push(i / nodeC);
+                         if(!ldcanvas.alphas){
+                             ldcanvas.alphas = [];
+                         }
+
+                         context.setTransform(1,0,0,1,r,r);
+                         context.clearRect(-r, -r, (r*2), (r*2));
+
+                         for(var i = 0; i < count; i++){
+                             if(ldcanvas.alphas.length < count){
+                                 ldcanvas.alphas.push(i / count);
                              }
 
-                             context.fillStyle = 'rgba(' + ldcanvas.color[0] + ',' + ldcanvas.color[1] + ',' + ldcanvas.color[2] + ',' + ldcanvas.alphas[i] + ')';//)
+                             context.fillStyle = 'rgba(' + color[0] + ',' + color[1] + ',' + color[2] + ',' + ldcanvas.alphas[i] + ')';//)
                              context.strokeStyle = 'transparent';
                              context.beginPath();
 
-                             context.moveTo((0-ldcanvas.w/4), (ldcanvas.r-ldcanvas.h));
-                             context.quadraticCurveTo(0, (ldcanvas.r-ldcanvas.h-ldcanvas.w/2),(0+ldcanvas.w/4),(ldcanvas.r-ldcanvas.h));
-                             context.lineTo((0+ldcanvas.w/2), (ldcanvas.r-ldcanvas.w/3));
-                             context.quadraticCurveTo(0, (ldcanvas.r+ldcanvas.w/3), (0-ldcanvas.w/2),(ldcanvas.r-ldcanvas.w/3));
+                             context.moveTo((0-w/4), (r-h));
+                             context.quadraticCurveTo(0, (r-h-w/2),(0+w/4),(r-h));
+                             context.lineTo((0+w/2), (r-w/3));
+                             context.quadraticCurveTo(0, (r+w/3), (0-w/2),(r-w/3));
                              context.closePath();
                              context.fill();
                              context.stroke();
 
-                             context.rotate((360/nodeC) * Math.PI / 180);
+                             context.rotate((360/count) * Math.PI / 180);
                          }
 
-                         ldcanvas.alphas.splice(0,0,ldcanvas.alphas[nodeC-1]).pop();
+                         ldcanvas.alphas.splice(0,0,ldcanvas.alphas[count-1]).pop();
                      },
-               type2:function(){
-                         console.error("unimplemented!");
+               type2:function(ldcanvas){
+                         var canvas = ldcanvas.getCanvas();
+                         var context = canvas.getContext('2d');
+                         var color = ldcanvas.color;
+                         var count = 12;
+
+                         canvas.width = ldcanvas.size;
+                         canvas.height = ldcanvas.size / 2;
+
+                         var ty = canvas.height * 0.45;
+                         var by = canvas.height * 0.55;
+                         var dx = canvas.width / count;
+                         var xposit = 0;
+
+                         if(!ldcanvas.alphas){
+                             ldcanvas.alphas = [];
+                         }
+
+                         context.clearRect(0, 0, canvas.width, canvas.height);
+
+                         for(var i=0; i<count;i++){
+                             if(ldcanvas.alphas.length < count){
+                                 ldcanvas.alphas.push(i/count/2);
+                             }
+
+                             context.fillStyle = 'rgba('+color[0]+','+color[1]+','+color[2]+','+ldcanvas.alphas[i]+')';//)
+                             context.strokeStyle = 'transparent';
+
+                             context.beginPath();
+
+                             context.moveTo(xposit,canvas.height);//左下
+                             context.lineTo(xposit,0);//左上
+                             context.lineTo(xposit + dx * 4 , ty);//右上
+                             context.lineTo(xposit + dx * 4, by);//右下
+
+                             context.closePath();
+                             context.fill();
+                             context.stroke();
+
+                             xposit += dx;
+                         }
+                         ldcanvas.alphas.splice(0,0,ldcanvas.alphas[count-1]).pop();
                      },
            },
     }
 
-    // ここより上は、今のところ意味ない
     $('div' + '.g2ab').each(function(){
         var keyValue = {};
 
@@ -157,8 +201,10 @@ animation: {
             }
             ldcanvas.start();
 
-            $('<span />').appendTo($(divname)).text('Loading : ');
-            $('<a />').appendTo($(divname)).attr('href',gisturl).attr('target','_blank').text(gisturl);
+            var span = $('<span />').css({
+            }).appendTo($(divname)).text('Loading : ');
+            $('<a />').appendTo(span).attr('href',gisturl).attr('target','_blank').text(gisturl);
+            //$('<a />').appendTo($(divname)).attr('href',gisturl).attr('target','_blank').text(gisturl);
 
             $.ajax({
                 url: gisturl + '.json',
