@@ -15,25 +15,31 @@ jQuery.event.add(window, "load", function(){
 
 LoadingCanvas :
     function(parentDdid){
-        $('<canvas />').addClass(parentDdid).appendTo($('div.' + parentDdid));
-        this.color = [0,100,255];
         this.alphas = [];
         this.pddid = parentDdid;
+        this.loadingType;
+        this.size = 30;
+        this.color = [0,100,255];
 
-        this.setSize = function(_size){
-            this.r = _size / 2;
-            this.w = Math.round(_size * 0.1);
-            this.h = Math.round(_size * 0.25);
-            var canvas = this.getCanvas();
-            canvas.width=_size;
-            canvas.height=_size;
+        this.setType = function(type){
+            this.loadingType = 'type' + type;
         }
 
-        this.setColor = function(r,g,b){
+        this.setSize = function(size){
+            this.size = size;
+            this.r = size / 2;
+            this.w = Math.round(size * 0.1);
+            this.h = Math.round(size * 0.25);
+            var canvas = this.getCanvas();
+            canvas.width = size;
+            canvas.height = size;
+        }
+
+        this.setColor = function(){
             if(arguments.length == 3){
-                this.color[0] = r ;
-                this.color[1] = g ;
-                this.color[2] = b ;
+                this.color[0] = arguments[0] ;
+                this.color[1] = arguments[1] ;
+                this.color[2] = arguments[2] ;
             }else if(arguments.length == 1){
                 var start = arguments[0].indexOf('(') + 1;
                 var end = arguments[0].indexOf(')');
@@ -42,6 +48,10 @@ LoadingCanvas :
                 console.error('setColor' + arguments);
                 console.dir(arguments);
             }
+        }
+
+        this.getType = function(){
+            return loadingType;
         }
 
         this.getCanvas = function(){
@@ -84,6 +94,9 @@ LoadingCanvas :
         this.stop = function(){
             clearInterval(this.loadingTimer);
         }
+
+        $('<canvas />').addClass(parentDdid).appendTo($('div.' + parentDdid));
+        this.setSize(this.size);
     },
     }
 
@@ -126,8 +139,6 @@ LoadingCanvas :
             var ldcanvas = new g2ab.LoadingCanvas(ddid);
             if(keyValue.size){
                 ldcanvas.setSize(keyValue.size);
-            }else{
-                ldcanvas.setSize(30);
             }
             if(keyValue.imgcolor){
                 ldcanvas.setColor(keyValue.imgcolor);
