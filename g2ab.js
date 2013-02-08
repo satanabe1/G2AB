@@ -101,7 +101,7 @@ drawLoadingImage :
         var divname = 'div.' + ddid;
         $(this).addClass(ddid);
 
-        $($(this).text().split("\n")).each(function(){
+        $($(this).html().replace(/<br[ \t\/]*?>/g,'\n').split("\n")).each(function(){
             var nbsp = String.fromCharCode(160);
             line = this.toString().replace(eval("/" + nbsp + "/g"),'');// &nbsp;を削除
 
