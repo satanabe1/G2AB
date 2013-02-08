@@ -23,15 +23,15 @@
 
 ```
 <div class="g2ab">
-  url@https://gist.github.com/satanabe1/4683624
+url@https://gist.github.com/satanabe1/4683624
 </div>
 ```
 
 ### オプション
 ```
 <div class="g2ab">
-  size@ローディング画像の大きさ
-  imgcolor@ローディング画像の基本色
+size@ローディング画像の大きさ
+color@ローディング画像の基本色
 </div>
 ```
 
@@ -39,8 +39,8 @@
 
 ```
 <div class="g2ab">
-  size@128
-  imgcolor@255,100,255
+size@128
+color@255,100,255
 </div>
 ```
 
