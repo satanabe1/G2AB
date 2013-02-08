@@ -18,8 +18,8 @@ LoadingCanvas :
         this.alphas = [];
         this.pddid = parentDdid;
         this.loadingType;
-        this.size = 30;
-        this.color = [0,100,255];
+        this.size;
+        this.color = [];
 
         this.setType = function(type){
             this.loadingType = 'type' + type;
@@ -45,13 +45,13 @@ LoadingCanvas :
                 var end = arguments[0].indexOf(')');
                 this.color = arguments[0].substr(start , end - start).split(',');
             }else{
-                console.error('setColor' + arguments);
+                console.error('setColor : ' + arguments);
                 console.dir(arguments);
             }
         }
 
         this.getType = function(){
-            return loadingType;
+            return this.loadingType;
         }
 
         this.getCanvas = function(){
@@ -60,35 +60,12 @@ LoadingCanvas :
 
         this.start = function(){
             var ldcanvas = this;
-            this.loadingTimer = setInterval(function(){
-                var nodeC = 12;
-                var context = ldcanvas.getCanvas().getContext('2d');
-                context.setTransform(1,0,0,1,ldcanvas.r,ldcanvas.r);
-                context.clearRect(-ldcanvas.r, -ldcanvas.r, (ldcanvas.r*2), (ldcanvas.r*2));
-
-                for(var i = 0; i < nodeC; i++){
-                    if(ldcanvas.alphas.length < nodeC){
-                        ldcanvas.alphas.push(i / nodeC);
-                    }
-
-                    context.fillStyle = 'rgba(' + ldcanvas.color[0] + ',' + ldcanvas.color[1] + ',' + ldcanvas.color[2] + ',' + ldcanvas.alphas[i] + ')';//)
-                    context.strokeStyle = 'transparent';
-                    context.beginPath();
-
-                    context.moveTo((0-ldcanvas.w/4), (ldcanvas.r-ldcanvas.h));
-                    context.quadraticCurveTo(0, (ldcanvas.r-ldcanvas.h-ldcanvas.w/2),(0+ldcanvas.w/4),(ldcanvas.r-ldcanvas.h));
-                    context.lineTo((0+ldcanvas.w/2), (ldcanvas.r-ldcanvas.w/3));
-                    context.quadraticCurveTo(0, (ldcanvas.r+ldcanvas.w/3), (0-ldcanvas.w/2),(ldcanvas.r-ldcanvas.w/3));
-                    context.closePath();
-                    context.fill();
-                    context.stroke();
-
-                    context.rotate((360/nodeC) * Math.PI / 180);
-                }
-
-                ldcanvas.alphas.splice(0,0,ldcanvas.alphas[nodeC-1]).pop();
-
-            }, 50);
+            var type = this.getType();
+            if(g2ab.animation[type.toString()]){
+                this.loadingTimer = setInterval(function(){ g2ab.animation[type.toString()](ldcanvas) }, 50);
+            }else{
+                console.error("unimplemented:" + type.toString());
+            }
         }
 
         this.stop = function(){
@@ -96,8 +73,43 @@ LoadingCanvas :
         }
 
         $('<canvas />').addClass(parentDdid).appendTo($('div.' + parentDdid));
-        this.setSize(this.size);
+        this.setType(1);
+        this.setSize(30);
+        this.setColor(0,100,255);
     },
+animation: {
+               type1:function(ldcanvas){
+                         var nodeC = 12;
+                         var context = ldcanvas.getCanvas().getContext('2d');
+                         context.setTransform(1,0,0,1,ldcanvas.r,ldcanvas.r);
+                         context.clearRect(-ldcanvas.r, -ldcanvas.r, (ldcanvas.r*2), (ldcanvas.r*2));
+
+                         for(var i = 0; i < nodeC; i++){
+                             if(ldcanvas.alphas.length < nodeC){
+                                 ldcanvas.alphas.push(i / nodeC);
+                             }
+
+                             context.fillStyle = 'rgba(' + ldcanvas.color[0] + ',' + ldcanvas.color[1] + ',' + ldcanvas.color[2] + ',' + ldcanvas.alphas[i] + ')';//)
+                             context.strokeStyle = 'transparent';
+                             context.beginPath();
+
+                             context.moveTo((0-ldcanvas.w/4), (ldcanvas.r-ldcanvas.h));
+                             context.quadraticCurveTo(0, (ldcanvas.r-ldcanvas.h-ldcanvas.w/2),(0+ldcanvas.w/4),(ldcanvas.r-ldcanvas.h));
+                             context.lineTo((0+ldcanvas.w/2), (ldcanvas.r-ldcanvas.w/3));
+                             context.quadraticCurveTo(0, (ldcanvas.r+ldcanvas.w/3), (0-ldcanvas.w/2),(ldcanvas.r-ldcanvas.w/3));
+                             context.closePath();
+                             context.fill();
+                             context.stroke();
+
+                             context.rotate((360/nodeC) * Math.PI / 180);
+                         }
+
+                         ldcanvas.alphas.splice(0,0,ldcanvas.alphas[nodeC-1]).pop();
+                     },
+               type2:function(){
+                         console.error("unimplemented!");
+                     },
+           },
     }
 
     // ここより上は、今のところ意味ない
@@ -121,12 +133,9 @@ LoadingCanvas :
             }else if(line.match(/^[ \t]*size@.+/)){ // size
                 var token = this.split('size@');
                 keyValue.size = token[1].replace(/[ \t]*$/,'');
-            }else if(line.match(/^[ \t]*imgcolor@.+/)){ // imgcolor
-                var token = this.split('imgcolor@');
-                keyValue.imgcolor = 'rgb(' + token[1].replace(/[ \t]*$/,'') + ')';//)
-            }else if(line.match(/^[ \t]*fntcolor@.+/)){ // fntcolor
-                var token = this.split('fntcolor@');
-                keyValue.fntcolor = 'rgb(' + token[1].replace(/[ \t]*$/,'') + ')';//)
+            }else if(line.match(/^[ \t]*color@.+/)){ // color
+                var token = this.split('color@');
+                keyValue.color = 'rgb(' + token[1].replace(/[ \t]*$/,'') + ')';//)
             }
         });
         console.dir(keyValue);
@@ -137,11 +146,14 @@ LoadingCanvas :
             var gisturl = keyValue.url;
 
             var ldcanvas = new g2ab.LoadingCanvas(ddid);
+            if(keyValue.type){
+                ldcanvas.setType(keyValue.type);
+            }
             if(keyValue.size){
                 ldcanvas.setSize(keyValue.size);
             }
-            if(keyValue.imgcolor){
-                ldcanvas.setColor(keyValue.imgcolor);
+            if(keyValue.color){
+                ldcanvas.setColor(keyValue.color);
             }
             ldcanvas.start();
 
