@@ -15,7 +15,7 @@
 
 ```
 <div class="g2ab">
-  url@GistのURL
+url@GistのURL
 </div>
 ```
 
