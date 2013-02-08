@@ -99,9 +99,10 @@ animation: {
                              context.beginPath();
 
                              context.moveTo((0-w/4), (r-h));
-                             context.quadraticCurveTo(0, (r-h-w/2),(0+w/4),(r-h));
+                             context.quadraticCurveTo(0, (r-h-w/8),(0+w/4),(r-h));
+                             //context.lineTo((0+w/4),(r-h));
                              context.lineTo((0+w/2), (r-w/3));
-                             context.quadraticCurveTo(0, (r+w/3), (0-w/2),(r-w/3));
+                             context.quadraticCurveTo(0, (r+w/12), (0-w/2),(r-w/3));
                              context.closePath();
                              context.fill();
                              context.stroke();
