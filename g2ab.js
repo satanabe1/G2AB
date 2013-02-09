@@ -74,6 +74,7 @@ LoadingCanvas :
         this.setColor(0,100,255);
     },
 animation: {
+               // type1: Twitter風アニメーション //{{{
                type1:function(ldcanvas){
                          var r = ldcanvas.size / 2;
                          var w = Math.round(ldcanvas.size * 0.1);
@@ -112,6 +113,8 @@ animation: {
 
                          ldcanvas.alphas.splice(0,0,ldcanvas.alphas[count-1]).pop();
                      },
+               //}}}
+               // type2: プログレスバー風アニメーション //{{{
                type2:function(ldcanvas){
                          var canvas = ldcanvas.getCanvas();
                          var context = canvas.getContext('2d');
@@ -155,6 +158,55 @@ animation: {
                          }
                          ldcanvas.alphas.splice(0,0,ldcanvas.alphas[count-1]).pop();
                      },
+               //}}}
+               // type3: 丸い物体がクルクル //{{{
+               type3:function(ldcanvas){
+                         var count = 8;
+                         var size = ldcanvas.size;
+                         var canvas = ldcanvas.getCanvas();
+                         var context = canvas.getContext('2d');
+                         var color = ldcanvas.color;
+                         var alphas = [];
+
+                         var w = size/(count * count);
+                         var r = size / 2;
+
+                         if(ldcanvas.reg){
+                             ldcanvas.reg += 13;
+                         }else{
+                             ldcanvas.reg = 5;
+                         }
+
+                         context.setTransform(1,0,0,1,r,r);
+                         context.clearRect(-r,-r,r*2,r*2);
+                         context.shadowColor = 'rgba('+color[0]+','+color[1]+','+color[2]+',1)';//)
+                         context.rotate((ldcanvas.reg%360) * Math.PI / 180);
+
+                         for(var i=0; i<count;i++){
+                             if(alphas.length < count){
+                                 alphas.push(i/count);
+                             }
+
+                             context.fillStyle = 'rgba('+color[0]+','+color[1]+','+color[2]+',' + alphas[i] + ')';//)
+                             context.strokeStyle = 'transparent';
+                             context.beginPath();
+
+                             context.arc(r/2, r/2, w, 0, Math.PI*2, false);
+                             context.shadowBlur = w/2;
+
+                             context.fill();
+                             context.stroke();
+
+                             w *= 1.3;
+                             context.rotate((360/count) * Math.PI / 180);
+                         }
+                     },
+               //}}}
+               // type4: 未実装 //{{{
+               type4:function(ldcanvas){
+                         console.log("unimplemented!!!");
+                     },
+               //}}}
            },
     }
 

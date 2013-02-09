@@ -46,3 +46,5 @@ color@255,100,255
 </div>
 ```
 
+### スクリーンショット
+![Demo](https://raw.github.com/satanabe1/G2AB/master/pic/type.png)
