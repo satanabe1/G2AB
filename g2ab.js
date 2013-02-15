@@ -1,13 +1,5 @@
 
-function printProperties(obj) {
-    var properties = '';
-    for (var prop in obj){
-        properties += prop + " = " + obj[prop] + "\n";
-    }
-    alert(properties);
-}
 
-//$(window).load(function(){
 jQuery.event.add(window, "load", function(){
 
     var g2ab = {
