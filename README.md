@@ -21,7 +21,7 @@
 例:
 
 ```
-<div class="g2ab" data-url="https://www.google.co.jp/satanabe1" >
+<div class="g2ab" data-url="https://gist.github.com/satanabe1/4717276" >
 </div>
 ```
 
@@ -40,7 +40,7 @@ data-color="ローディング画像の色">
 
 ```
 <div class="g2ab"
-data-url="https://www.google.co.jp/satanabe1"
+data-url="https://gist.github.com/satanabe1/4717276"
 data-type="1"
 data-size="240"
 data-color="5,30,130">
