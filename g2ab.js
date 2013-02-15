@@ -211,46 +211,25 @@ animation: {
     }
 
     $('div' + '.g2ab').each(function(){
-        var keyValue = {};
 
         var ddid = Math.floor(Math.random() * 10000) + "_" + new Date().getTime();//
         var divname = 'div.' + ddid;
         $(this).addClass(ddid);
 
-        $($(this).html().replace(/<br[ \t\/]*?>/g,'\n').split("\n")).each(function(){
-            var nbsp = String.fromCharCode(160);
-            line = this.toString().replace(eval("/" + nbsp + "/g"),'');// &nbsp;を削除
-
-            if(line.match(/^[ \t]*url@.+/)){ // url
-                var token = this.split('url@');
-                keyValue.url = token[1].replace(/[ \t]*$/,'');
-            }else if(line.match(/^[ \t]*type@.+/)){ // type
-                var token = this.split('type@');
-                keyValue.type = token[1].replace(/[ \t]*$/,'');
-            }else if(line.match(/^[ \t]*size@.+/)){ // size
-                var token = this.split('size@');
-                keyValue.size = token[1].replace(/[ \t]*$/,'');
-            }else if(line.match(/^[ \t]*color@.+/)){ // color
-                var token = this.split('color@');
-                keyValue.color = 'rgb(' + token[1].replace(/[ \t]*$/,'') + ')';//)
-            }
-        });
-        console.dir(keyValue);
-
-        if(keyValue.url){
+        if($(this).data('url')){
             $(this).empty();
 
-            var gisturl = keyValue.url;
+            var gisturl = $(this).data('url');
 
             var ldcanvas = new g2ab.LoadingCanvas(ddid);
-            if(keyValue.type){
-                ldcanvas.setType(keyValue.type);
+            if($(this).data('type')){
+                ldcanvas.setType($(this).data('type'));
             }
-            if(keyValue.size){
-                ldcanvas.setSize(keyValue.size);
+            if($(this).data('size')){
+                ldcanvas.setSize($(this).data('size'));
             }
-            if(keyValue.color){
-                ldcanvas.setColor(keyValue.color);
+            if($(this).data('color')){
+                ldcanvas.setColor('rgb('+$(this).data('color')+')');//)
             }
             ldcanvas.start();
 
@@ -281,7 +260,7 @@ animation: {
             });
         }else{
             console.error("Illigal parameter.");
-            console.dir(keyValue);
+            console.dir($(this).data());
         }
     });
 });

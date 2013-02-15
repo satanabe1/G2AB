@@ -14,37 +14,39 @@
 ブログでGistのソースコードを貼り付けたいところに，以下を記述
 
 ```
-<div class="g2ab">
-url@GistのURL
+<div class="g2ab" data-url="Gistのurl" >
 </div>
 ```
 
 例:
 
 ```
-<div class="g2ab">
-url@https://gist.github.com/satanabe1/4683624
+<div class="g2ab" data-url="https://www.google.co.jp/satanabe1" >
 </div>
 ```
 
 ### オプション
+色とかローディング画像の形とか、大きさとか
 ```
-<div class="g2ab">
-type@ローディング画像のタイプ
-size@ローディング画像の大きさ
-color@ローディング画像の基本色
+<div class="g2ab"
+data-url="Gistのurl"
+data-type="ローディング画像の番号 1,2,3が存在する"
+data-size="ローディング画像の大きさ"
+data-color="ローディング画像の色">
 </div>
 ```
 
 例:
 
 ```
-<div class="g2ab">
-type@1
-size@128
-color@255,100,255
+<div class="g2ab"
+data-url="https://www.google.co.jp/satanabe1"
+data-type="1"
+data-size="240"
+data-color="5,30,130">
 </div>
 ```
 
 ### スクリーンショット
 ![Demo](https://raw.github.com/satanabe1/G2AB/master/pic/type.png)
+
