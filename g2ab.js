@@ -77,7 +77,7 @@ LoadingCanvas :
             var ldcanvas = this;
             var type = this.getType();
             if(g2ab.animation[type.toString()]){
-                this.loadingTimer = setInterval(function(){ g2ab.animation[type.toString()](ldcanvas) }, 50);
+                this.loadingTimer = setInterval(function(){ g2ab.animation[type.toString()](ldcanvas) }, 60);
             }else{
                 console.error("unimplemented:" + type.toString());
             }
@@ -191,7 +191,7 @@ animation: {
                          var r = size / 2;
 
                          if(ldcanvas.reg){
-                             ldcanvas.reg += 13;
+                             ldcanvas.reg += 19;
                          }else{
                              ldcanvas.reg = 5;
                          }
@@ -262,7 +262,7 @@ animation: {
                 type: 'GET',
                 dataType: 'jsonp',
                 cache: false
-            }).success(function(gistdata) {
+            }).done(function(gistdata) {
                 // link要素の追加
                 $('<link />',{
                     'media':'screen',
@@ -274,7 +274,7 @@ animation: {
 
                 // gistコードの追加
                 $(divname).html(gistdata.div);
-            }).error(function(ex) {
+            }).fail(function(ex) {
                 console.log(ex);
             });
         }else{
