@@ -267,7 +267,7 @@ animation: {
                 $('<link />',{
                     'media':'screen',
                     'rel':'stylesheet',
-                    'href':gistdata.stylesheet
+                    'href':'https://gist.github.com'+gistdata.stylesheet
                 }).appendTo('head');
 
                 ldcanvas.stop();
